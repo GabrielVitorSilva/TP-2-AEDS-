@@ -1,0 +1,2 @@
+Este é um exemplo de texto para testar o algoritmo de compressão de Huffman.
+Este texto será compactado e descompactado para verificar a eficiência do algoritmo.
