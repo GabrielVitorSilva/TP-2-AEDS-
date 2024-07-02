@@ -1,5 +1,5 @@
 import heapq
-from collections import Counter, defaultdict
+from collections import Counter
 import json
 
 class NoHuffman:
@@ -63,7 +63,11 @@ def desserializar_arvore(dados):
     return no
 
 # Função para compactar um arquivo de texto usando Huffman
-def compactar_arquivo(nome_arquivo_entrada, nome_arquivo_saida):
+def compactar_arquivo():
+    nome_arquivo_entrada = "entrada.txt"
+    nome_arquivo_codificado = "saida.huf"
+    nome_arquivo_arvore = "arvore.json"
+
     with open(nome_arquivo_entrada, 'r') as f:
         texto = f.read()
 
@@ -71,19 +75,27 @@ def compactar_arquivo(nome_arquivo_entrada, nome_arquivo_saida):
     codigos = gerar_codigos_huffman(raiz)
     texto_codificado = ''.join(codigos[caractere] for caractere in texto)
 
-    # Salvar a árvore de Huffman e o texto codificado em saida.huf
-    with open(nome_arquivo_saida, 'w') as f:
-        json.dump({'arvore': serializar_arvore(raiz), 'dados': texto_codificado}, f)
+    # Salvar a árvore de Huffman em arvore.json
+    with open(nome_arquivo_arvore, 'w') as f:
+        json.dump(serializar_arvore(raiz), f)
 
-    print(f"Arquivo '{nome_arquivo_entrada}' foi compactado para '{nome_arquivo_saida}'.")
+    # Salvar apenas o texto codificado em saida.huf
+    with open(nome_arquivo_codificado, 'w') as f:
+        f.write(texto_codificado)
+
+    print(f"Arquivo '{nome_arquivo_entrada}' foi compactado para '{nome_arquivo_codificado}'.")
 
 # Função para descompactar um arquivo comprimido usando Huffman
-def descompactar_arquivo(nome_arquivo_entrada, nome_arquivo_saida):
-    with open(nome_arquivo_entrada, 'r') as f:
-        conteudo = json.load(f)
+def descompactar_arquivo():
+    nome_arquivo_codificado = "saida.huf"
+    nome_arquivo_arvore = "arvore.json"
+    nome_arquivo_saida = "descompactado.txt"
 
-    arvore_serializada = conteudo['arvore']
-    texto_codificado = conteudo['dados']
+    with open(nome_arquivo_arvore, 'r') as f:
+        arvore_serializada = json.load(f)
+
+    with open(nome_arquivo_codificado, 'r') as f:
+        texto_codificado = f.read()
 
     raiz = desserializar_arvore(arvore_serializada)
     texto_decodificado = descompactar_sequencia(texto_codificado, raiz)
@@ -91,7 +103,7 @@ def descompactar_arquivo(nome_arquivo_entrada, nome_arquivo_saida):
     with open(nome_arquivo_saida, 'w') as f:
         f.write(texto_decodificado)
 
-    print(f"Arquivo '{nome_arquivo_entrada}' foi descompactado para '{nome_arquivo_saida}'.")
+    print(f"Arquivo '{nome_arquivo_codificado}' foi descompactado para '{nome_arquivo_saida}'.")
 
 # Função para descomprimir a sequência de bits usando a árvore de Huffman
 def descompactar_sequencia(bits, raiz):
@@ -120,13 +132,9 @@ def main():
         opcao = input("Opção: ")
 
         if opcao == '1':
-            nome_arquivo_entrada = input("Digite o nome do arquivo de entrada: ")
-            nome_arquivo_saida = input("Digite o nome do arquivo de saída: ")
-            compactar_arquivo(nome_arquivo_entrada, nome_arquivo_saida)
+            compactar_arquivo()
         elif opcao == '2':
-            nome_arquivo_entrada = input("Digite o nome do arquivo comprimido (entrada): ")
-            nome_arquivo_saida = input("Digite o nome do arquivo de saída: ")
-            descompactar_arquivo(nome_arquivo_entrada, nome_arquivo_saida)
+            descompactar_arquivo()
         elif opcao == '3':
             print("Saindo...")
             break
