@@ -2,6 +2,31 @@ import heapq
 from collections import Counter
 import json
 
+class BitWriter:
+    def __init__(self, filename):
+        self.file = open(filename, 'wb')
+        self.bit_atual = 0
+        self.bits_preenchidos = 0
+
+    def escrever_bit(self, bit):
+        # Pegando cada Byte (Os bytes ainda não foram convertidos, estão em formato de decimal)
+        self.bit_atual = (self.bit_atual << 1) | bit
+        self.bits_preenchidos += 1
+
+        if self.bits_preenchidos == 8:
+            # Depois de terminar de pegar o byte em forma de decimal, converte-lo para byte e escreve-lo no arquivo
+            self.file.write(bytes([self.bit_atual]))
+            self.bit_atual = 0
+            self.bits_preenchidos = 0
+
+    def fechar(self):
+        if self.bits_preenchidos > 0:
+            self.bit_atual = self.bit_atual << (8 - self.bits_preenchidos)
+            print(8 - self.bits_preenchidos)
+            self.file.write(bytes([self.bit_atual]))
+        self.file.close()
+
+
 class NoHuffman:
     def __init__(self, caractere, frequencia):
         self.caractere = caractere
@@ -122,6 +147,43 @@ def descompactar_sequencia(bits, raiz):
 
     return ''.join(texto_decodificado)
 
+# Função para ler os bits a partir de um arquivo binário.
+def read_bits_from_file():
+    filename = "saida.huf"
+    bit_string = ''
+
+    # Abrir o arquivo no modo leitura
+    with open(filename, 'rb') as file:
+        byte = file.read(1)
+        while byte:
+            # Converter o byte para um inteiro
+            byte_value = ord(byte)
+            # Converter o inteiro para sua representação binária e preencher com zeros para garantir que ele fique com 8 bits
+            bits = bin(byte_value)[2:].zfill(8)
+            # Fazer o append dos bits para bit_string
+            bit_string += bits
+            # Ler o próximo byte
+            byte = file.read(1)
+    
+    with open(filename, 'w') as file:
+        file.write(bit_string)
+
+# Função para escrever os bits a partir de um arquivo com 0s e 1s.
+def write_bits_to_file():
+    with open("saida.huf", "r") as f:
+                zeros_uns = f.read()
+
+    bits = list(zeros_uns)
+    bits = list(map(int, bits))
+
+    bit_writer = BitWriter('saida.huf')
+
+    for bit in bits:
+        bit_writer.escrever_bit(bit)
+
+    print("HELLO")
+    bit_writer.fechar()
+
 # Menu para selecionar a operação
 def main():
     while True:
@@ -131,10 +193,13 @@ def main():
         print("3. Sair")
         opcao = input("Opção: ")
 
-        if opcao == '1':
+        if opcao == '1': 
             compactar_arquivo()
+            write_bits_to_file()
         elif opcao == '2':
+            read_bits_from_file()
             descompactar_arquivo()
+            write_bits_to_file()
         elif opcao == '3':
             print("Saindo...")
             break
