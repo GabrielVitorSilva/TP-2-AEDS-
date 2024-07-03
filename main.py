@@ -181,7 +181,6 @@ def write_bits_to_file():
     for bit in bits:
         bit_writer.escrever_bit(bit)
 
-    print("HELLO")
     bit_writer.fechar()
 
 # Menu para selecionar a operação
