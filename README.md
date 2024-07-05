@@ -37,14 +37,52 @@ A interface permite que o usuário escolha entre compactar ou descompactar um ar
 
 Você pode instalar as bibliotecas necessárias usando pip:
 
-```bash
-pip install streamlit matplotlib
-Arquivos Necessários
-entrada.txt: Arquivo de texto a ser compactado.
-compactar_descompactar.py: Arquivo contendo a implementação das funções de compactação e descompactação.
-Executando o Projeto
-Criar o Arquivo de Entrada:
-Certifique-se de ter um arquivo chamado entrada.txt no mesmo diretório que o código, contendo o texto que você deseja compactar.
+## - pip install streamlit matplotlib
 
-Rodar o Script com Streamlit:
+### Arquivos Necessários
+- entrada.txt: Arquivo de texto a ser compactado.
+- compactar_descompactar.py: Arquivo contendo a implementação das funções de compactação e descompactação.
+- Executando o Projeto
+- Criar o Arquivo de Entrada:
+- Certifique-se de ter um arquivo chamado entrada.txt no mesmo diretório que o código, contendo o texto que você deseja compactar.
+
+#### Rodar o Script com Streamlit:
 Execute o seguinte comando no terminal para iniciar a aplicação Streamlit:
+## streamlit run main.py
+## Utilizar a Interface:
+
+### Compactar Arquivo:
+
+- Selecione a opção "Compactar".
+- Clique no botão "Compactar arquivo entrada.txt".
+- O arquivo compactado será salvo como `saida.huf`, e a árvore de Huffman será salva como `arvore.json`.
+- Um gráfico comparativo dos tamanhos dos arquivos original e compactado será exibido.
+
+### Descompactar Arquivo:
+
+- Selecione a opção "Descompactar".
+- Clique no botão "Descompactar arquivo".
+- O arquivo descompactado será salvo como `descompactado.txt`.
+- Um gráfico comparativo dos tamanhos dos arquivos compactado e descompactado será exibido.
+
+## Observações
+
+- Certifique-se de que os arquivos `entrada.txt`, `saida.huf`, `arvore.json`, e `descompactado.txt` estejam no mesmo diretório do script.
+- Para melhor visualização dos gráficos no Streamlit, instale o matplotlib.
+
+## Exemplo de Uso
+
+### Para compactar um arquivo de texto:
+
+1. Coloque o texto que deseja compactar no arquivo `entrada.txt`.
+2. Execute o script com o Streamlit.
+3. Selecione a opção "Compactar" e clique no botão para compactar o arquivo.
+4. Verifique o tamanho do arquivo original e compactado no gráfico exibido.
+
+### Para descompactar o arquivo:
+
+1. Execute o script com o Streamlit.
+2. Selecione a opção "Descompactar" e clique no botão para descompactar o arquivo.
+3. Verifique o tamanho do arquivo compactado e descompactado no gráfico exibido.
+
+Com essas instruções, você poderá utilizar e entender melhor o funcionamento do compactador e descompactador de Huffman implementado.
